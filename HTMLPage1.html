@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Monte seu Bolo no Pote</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef9f4;
+            color: #4b2e2e;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .formulario {
+            flex: 1 1 300px;
+        }
+
+        .imagem-preview {
+            flex: 1 1 250px;
+            background-color: #fff7f2;
+            padding: 10px;
+            border: 1px solid #e6cfc0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+            .imagem-preview img {
+                max-width: 100%;
+                border-radius: 10px;
+            }
+
+        h1 {
+            text-align: center;
+            width: 100%;
+            color: #7a4e38;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 15px;
+            background-color: #a8745f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            background: #fff7f2;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e6cfc0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monte seu Bolo no Pote</h1>
+
+    <div class="formulario">
+        <label for="camada1">1ª Camada - Bolo:</label>
+        <select id="camada1" onchange="atualizarImagem()">
+            <option>Bolo de Chocolate</option>
+            <option>Bolo Branco (Baunilha)</option>
+        </select>
+
+        <label for="camada2">2ª Camada - Recheio:</label>
+        <select id="camada2" onchange="atualizarImagem()">
+            <option>Brigadeiro</option>
+            <option>Nutella</option>
+            <option>Leite Ninho</option>
+            <option>Doce de Leite</option>
+            <option>Creme de Oreo</option>
+            <option>Morango com Leite Condensado</option>
+            <option>Ganache Meio Amargo</option>
+            <option>Beijinho (Coco)</option>
+            <option>Maracujá</option>
+            <option>Frutas Vermelhas</option>
+        </select>
+
+        <label for="camada3">3ª Camada - Bolo:</label>
+        <select id="camada3" onchange="atualizarImagem()">
+            <option>Bolo de Chocolate</option>
+            <option>Bolo Branco (Baunilha)</option>
+        </select>
+
+        <label for="camada4">4ª Camada - Recheio:</label>
+        <select id="camada4" onchange="atualizarImagem()">
+            <option>Brigadeiro</option>
+            <option>Nutella</option>
+            <option>Leite Ninho</option>
+            <option>Doce de Leite</option>
+            <option>Creme de Oreo</option>
+            <option>Morango com Leite Condensado</option>
+            <option>Ganache Meio Amargo</option>
+            <option>Beijinho (Coco)</option>
+            <option>Maracujá</option>
+            <option>Frutas Vermelhas</option>
+        </select>
+
+        <button onclick="enviarPedido()">Finalizar Pedido</button>
+        <div class="resultado" id="resultado"></div>
+    </div>
+
+    <div class="imagem-preview">
+        <p><strong>Visual do seu Bolo no Pote:</strong></p>
+        <img id="imagemBolo" src="https://i.imgur.com/e9z0K5F.png" alt="Visual do bolo">
+    </div>
+
+    <script>
+    function enviarPedido() {
+      const c1 = document.getElementById('camada1').value;
+      const c2 = document.getElementById('camada2').value;
+      const c3 = document.getElementById('camada3').value;
+      const c4 = document.getElementById('camada4').value;
+
+      const url = "https://script.google.com/macros/s/AKfycbws9q5X4_vJ5ZatKvzxfUnSG7HJ89Fa34cU6Tx318PcdmtSoSg5abPeEhW7tjdruXTb/exec";
+
+      const formData = new FormData();
+      formData.append("camada1", c1);
+      formData.append("camada2", c2);
+      formData.append("camada3", c3);
+      formData.append("camada4", c4);
+
+      fetch(url, {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('resultado').innerHTML = `
+          <strong>Pedido enviado com sucesso!</strong><br><br>
+          1ª Camada: ${c1}<br>
+          2ª Camada: ${c2}<br>
+          3ª Camada: ${c3}<br>
+          4ª Camada: ${c4}<br>
+        `;
+      })
+      .catch(error => {
+        document.getElementById('resultado').innerHTML = "Erro ao enviar pedido. Tente novamente.";
+        console.error("Erro:", error);
+      });
+    }
+
+    function atualizarImagem() {
+      const c1 = document.getElementById('camada1').value;
+      const c2 = document.getElementById('camada2').value;
+      const c3 = document.getElementById('camada3').value;
+      const c4 = document.getElementById('camada4').value;
+
+      const texto = `${c1} + ${c2} + ${c3} + ${c4}`;
+      const placeholder = "https://dummyimage.com/300x400/f3e8de/4b2e2e&text=" + encodeURIComponent(texto);
+      document.getElementById("imagemBolo").src = placeholder;
+    }
+
+    // Atualiza ao carregar a página
+    window.onload = atualizarImagem;
+    </script>
+</body>
+</html>
