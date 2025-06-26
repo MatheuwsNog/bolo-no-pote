@@ -1,99 +1,135 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Monte seu Bolo no Pote</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
+<meta charset="UTF-8" />
+<title>Monte seu Bolo no Pote</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fef9f4;
+    color: #4b2e2e;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .formulario {
+    flex: 1 1 300px;
+    min-width: 280px;
+  }
+  .imagem-preview {
+    flex: 1 1 300px;
+    min-width: 280px;
+    position: relative;
+    width: 300px;
+    height: 400px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #c9b39e;
+    background: #fff7f2;
+  }
+  /* Cada camada será uma imagem posicionada absoluta */
+  .imagem-preview img {
+    position: absolute;
+    width: 280px;
+    height: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 15px;
+    transition: opacity 0.4s ease;
+  }
+  /* Camadas ficam empilhadas, posicionadas verticalmente com offset */
+  #camada1-img {
+    top: 20px;
+    z-index: 4;
+  }
+  #camada2-img {
+    top: 110px;
+    z-index: 3;
+  }
+  #camada3-img {
+    top: 200px;
+    z-index: 2;
+  }
+  #camada4-img {
+    top: 290px;
+    z-index: 1;
+  }
+  h1 {
+    text-align: center;
+    width: 100%;
+    color: #7a4e38;
+    font-size: 1.8rem;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 15px;
+    background-color: #a8745f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+  .resultado {
+    margin-top: 20px;
+    background: #fff7f2;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e6cfc0;
+    font-size: 1rem;
+  }
+  @media (max-width: 600px) {
     body {
-      font-family: Arial, sans-serif;
-      background-color: #fef9f4;
-      color: #4b2e2e;
-      max-width: 900px;
+      flex-direction: column;
+      padding: 15px;
+    }
+    .formulario, .imagem-preview {
+      flex: 1 1 100%;
+      min-width: auto;
       margin: auto;
-      padding: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-    }
-    .formulario {
-      flex: 1 1 300px;
-      min-width: 280px;
-    }
-    .imagem-preview {
-      flex: 1 1 250px;
-      background-color: #fff7f2;
-      padding: 10px;
-      border: 1px solid #e6cfc0;
-      border-radius: 10px;
-      text-align: center;
-      min-width: 280px;
-    }
-    .imagem-preview img {
-      max-width: 100%;
-      border-radius: 10px;
     }
     h1 {
-      text-align: center;
-      width: 100%;
-      color: #7a4e38;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
     }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-    select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
+    label, select, button, .resultado {
+      font-size: 1.1rem;
     }
     button {
-      margin-top: 20px;
+      padding: 18px;
+    }
+    .imagem-preview {
       width: 100%;
-      padding: 15px;
-      background-color: #a8745f;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      cursor: pointer;
+      height: auto;
+      position: relative;
     }
-    .resultado {
-      margin-top: 20px;
-      background: #fff7f2;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #e6cfc0;
-      font-size: 1rem;
+    .imagem-preview img {
+      position: relative;
+      width: 80vw;
+      top: auto !important;
+      left: auto !important;
+      transform: none !important;
+      margin-bottom: 10px;
     }
-    
-    /* Responsividade para telas menores */
-    @media (max-width: 600px) {
-      body {
-        flex-direction: column;
-        padding: 15px;
-      }
-      .formulario, .imagem-preview {
-        flex: 1 1 100%;
-        min-width: auto;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }
-      label, select, button, .resultado {
-        font-size: 1.1rem;
-      }
-      button {
-        padding: 18px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <h1>Monte seu Bolo no Pote</h1>
@@ -140,61 +176,87 @@
     </select>
 
     <button onclick="enviarPedido()">Finalizar Pedido</button>
+
     <div class="resultado" id="resultado"></div>
   </div>
 
-  <div class="imagem-preview">
-    <p><strong>Visual do seu Bolo no Pote:</strong></p>
-    <img id="imagemBolo" src="https://dummyimage.com/300x400/f3e8de/4b2e2e&text=Bolo+no+Pote" alt="Visual do bolo" />
+  <div class="imagem-preview" aria-label="Visualização do bolo no pote">
+    <img id="camada1-img" src="" alt="Imagem 1ª camada" />
+    <img id="camada2-img" src="" alt="Imagem 2ª camada" />
+    <img id="camada3-img" src="" alt="Imagem 3ª camada" />
+    <img id="camada4-img" src="" alt="Imagem 4ª camada" />
   </div>
 
-  <script>
-    function enviarPedido() {
-      const c1 = document.getElementById('camada1').value;
-      const c2 = document.getElementById('camada2').value;
-      const c3 = document.getElementById('camada3').value;
-      const c4 = document.getElementById('camada4').value;
+<script>
+  // URLs de imagens gratuitas para as camadas - usei imagens ilustrativas de bancos grátis
+  const imagensCamada1 = {
+    "Bolo de Chocolate": "https://i.imgur.com/vklSoMk.png",  // bolo chocolate
+    "Bolo Branco (Baunilha)": "https://i.imgur.com/38bpBPh.png"  // bolo baunilha
+  };
+  const imagensCamada2 = {
+    "Brigadeiro": "https://i.imgur.com/cINq8QA.png",
+    "Nutella": "https://i.imgur.com/dTjEdRi.png",
+    "Leite Ninho": "https://i.imgur.com/tzpM3js.png",
+    "Doce de Leite": "https://i.imgur.com/5u6uzLM.png",
+    "Creme de Oreo": "https://i.imgur.com/l0FGeJI.png",
+    "Morango com Leite Condensado": "https://i.imgur.com/COhNSpF.png",
+    "Ganache Meio Amargo": "https://i.imgur.com/vCiq6pQ.png",
+    "Beijinho (Coco)": "https://i.imgur.com/QnWNe8y.png",
+    "Maracujá": "https://i.imgur.com/gVBRtqI.png",
+    "Frutas Vermelhas": "https://i.imgur.com/Ttc8cXY.png"
+  };
+  const imagensCamada3 = imagensCamada1; // mesmo do bolo da camada 1
+  const imagensCamada4 = imagensCamada2; // mesmo do recheio da camada 2
 
-      const url = "https://script.google.com/macros/s/AKfycbws9q5X4_vJ5ZatKvzxfUnSG7HJ89Fa34cU6Tx318PcdmtSoSg5abPeEhW7tjdruXTb/exec";
+  function atualizarImagem() {
+    const c1 = document.getElementById('camada1').value;
+    const c2 = document.getElementById('camada2').value;
+    const c3 = document.getElementById('camada3').value;
+    const c4 = document.getElementById('camada4').value;
 
-      const formData = new FormData();
-      formData.append("camada1", c1);
-      formData.append("camada2", c2);
-      formData.append("camada3", c3);
-      formData.append("camada4", c4);
+    document.getElementById('camada1-img').src = imagensCamada1[c1] || "";
+    document.getElementById('camada2-img').src = imagensCamada2[c2] || "";
+    document.getElementById('camada3-img').src = imagensCamada3[c3] || "";
+    document.getElementById('camada4-img').src = imagensCamada4[c4] || "";
+  }
 
-      fetch(url, {
-        method: "POST",
-        body: formData
-      })
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('resultado').innerHTML = `
-          <strong>Pedido enviado com sucesso!</strong><br><br>
-          1ª Camada: ${c1}<br>
-          2ª Camada: ${c2}<br>
-          3ª Camada: ${c3}<br>
-          4ª Camada: ${c4}<br>
-        `;
-      })
-      .catch(error => {
-        document.getElementById('resultado').innerHTML = "Erro ao enviar pedido. Tente novamente.";
-        console.error("Erro:", error);
-      });
-    }
+  function enviarPedido() {
+    const c1 = document.getElementById('camada1').value;
+    const c2 = document.getElementById('camada2').value;
+    const c3 = document.getElementById('camada3').value;
+    const c4 = document.getElementById('camada4').value;
 
-    function atualizarImagem() {
-      const c1 = document.getElementById('camada1').value;
-      const c2 = document.getElementById('camada2').value;
-      const c3 = document.getElementById('camada3').value;
-      const c4 = document.getElementById('camada4').value;
+    const url = "https://script.google.com/macros/s/AKfycbws9q5X4_vJ5ZatKvzxfUnSG7HJ89Fa34cU6Tx318PcdmtSoSg5abPeEhW7tjdruXTb/exec";
 
-      const texto = `${c1} + ${c2} + ${c3} + ${c4}`;
-      const placeholder = "https://dummyimage.com/300x400/f3e8de/4b2e2e&text=" + encodeURIComponent(texto);
-      document.getElementById("imagemBolo").src = placeholder;
-    }
+    const formData = new FormData();
+    formData.append("camada1", c1);
+    formData.append("camada2", c2);
+    formData.append("camada3", c3);
+    formData.append("camada4", c4);
 
-    window.onload = atualizarImagem;
-  </script>
+    fetch(url, {
+      method: "POST",
+      body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('resultado').innerHTML = `
+        <strong>Pedido enviado com sucesso!</strong><br><br>
+        1ª Camada: ${c1}<br>
+        2ª Camada: ${c2}<br>
+        3ª Camada: ${c3}<br>
+        4ª Camada: ${c4}<br>
+      `;
+    })
+    .catch(error => {
+      document.getElementById('resultado').innerHTML = "Erro ao enviar pedido. Tente novamente.";
+      console.error("Erro:", error);
+    });
+  }
+
+  window.onload = () => {
+    atualizarImagem();
+  };
+</script>
 </body>
 </html>
