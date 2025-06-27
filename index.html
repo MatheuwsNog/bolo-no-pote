@@ -117,7 +117,6 @@
 <div class="resultado" id="resultado"></div>
 
 <script>
-  // Preços baseados nos sabores
   const precos = {
     "Bolo de Chocolate": 6.00,
     "Bolo Branco (Baunilha)": 5.00,
@@ -133,7 +132,6 @@
     "Frutas Vermelhas": 6.00
   };
 
-  // URLs imagens ilustrativas (pode trocar por imagens suas)
   const imagens = {
     "Bolo de Chocolate": "https://i.imgur.com/3G6K6tU.png",
     "Bolo Branco (Baunilha)": "https://i.imgur.com/VJQSw35.png",
@@ -151,7 +149,6 @@
 
   let boloCount = 0;
 
-  // Função que adiciona um novo bolo ao pedido
   function adicionarBolo() {
     boloCount++;
     const container = document.getElementById("bolos-container");
@@ -273,16 +270,24 @@
       return;
     }
 
-    // Construir dados do pedido
     let pedidos = [];
     for(let i = 1; i <= boloCount; i++) {
       const bolo = document.getElementById(`bolo-${i}`);
       if (!bolo) continue;
+
+      // Calcula total individual do bolo
+      let totalBolo = 0;
+      ["camada1", "camada2", "camada3", "camada4"].forEach(camada => {
+        const select = document.getElementById(`${camada}-${i}`);
+        if (select) totalBolo += precos[select.value] || 0;
+      });
+
       pedidos.push({
         camada1: document.getElementById(`camada1-${i}`).value,
         camada2: document.getElementById(`camada2-${i}`).value,
         camada3: document.getElementById(`camada3-${i}`).value,
         camada4: document.getElementById(`camada4-${i}`).value,
+        total: totalBolo.toFixed(2)
       });
     }
 
@@ -291,13 +296,17 @@
       return;
     }
 
-    const url = "https://script.google.com/macros/s/AKfycbyhy38y5zWqmsuBuUbNxvYFOunWbCJTXAyEmMwH8VmMcACjPTbXXyBvNQWcj-LfUkq9_A/exec"; 
+    // Calcula total geral
+    const totalGeral = pedidos.reduce((acc, b) => acc + parseFloat(b.total), 0);
+
+    // Enviar para o Apps Script
+    const url = "https://script.google.com/macros/s/AKfycbwWFIogNiKJhVYaXeOZEMr_drrD9Ew9Jus1cAGSo7kNnet8Yc4c1KP4vTdO6e9PXS2dTQ/exec"; 
     const data = new FormData();
     data.append("nome", nome);
     data.append("telefone", telefone);
     data.append("email", email);
     data.append("pedido", JSON.stringify(pedidos));
-    data.append("total", document.getElementById("total-pedido").textContent.replace("Total: R$ ", ""));
+    data.append("total_geral", totalGeral.toFixed(2));
 
     fetch(url, {
       method: "POST",
@@ -306,14 +315,23 @@
     .then(response => response.text())
     .then(res => {
       document.getElementById("resultado").textContent = "Pedido enviado com sucesso!";
+      // Limpar formulário opcionalmente:
+      // document.getElementById("nome").value = "";
+      // document.getElementById("telefone").value = "";
+      // document.getElementById("email").value = "";
+      // document.getElementById("bolos-container").innerHTML = "";
+      // boloCount = 0;
+      // adicionarBolo();
+      // calcularTotal();
     })
     .catch(() => {
       document.getElementById("resultado").textContent = "Erro ao enviar pedido. Tente novamente.";
     });
   }
 
-  // Inicializa com 1 bolo já
+  // Inicializa com 1 bolo
   adicionarBolo();
 </script>
+
 </body>
 </html>
